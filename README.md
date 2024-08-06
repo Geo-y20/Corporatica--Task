@@ -569,8 +569,13 @@ def sentiment_analysis():
 ### Sentiment Analysis
 1. Enter the text for sentiment analysis in the input box.
 2. Click on the "Analyze Sentiment" button to generate and display the sentiment.
-
-
+### Text Search
+1. Enter the text to be searched in the input box.
+2. Enter the search term in the input box.
+3. lick on the "Search" button to find and display the search result.
+### Text Categorization
+1. Enter the text to be categorized in the input box.
+2. Click on the "Categorize" button to generate and display the category.
 
 ## Sample of my work
 ![Sample of website](Sample%20of%20website/welcome.png)
