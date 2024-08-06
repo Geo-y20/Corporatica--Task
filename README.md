@@ -4,6 +4,10 @@
 ## Overview
 This project is a comprehensive software application designed for advanced data analysis and manipulation. It features robust front-end and back-end components, capable of handling various data types including tabular data, RGB images, and textual data. The application includes functionalities for data processing, analysis, and visualization, implemented using Flask for the back-end and React for the front-end. The project is containerized using Docker and deployed with Kubernetes for scalability and resilience.
 
+## Segmentation
+This task is segmented for data analysts, computer vision engineers, and NLP engineers. It encompasses different aspects of data handling, including tabular data processing, image processing, and natural language processing (NLP).
+
+
 ## Table of Contents
 - [Overview](#overview)
 - [Time Allocation](#time-allocation)
