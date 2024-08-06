@@ -37,37 +37,44 @@ data_store = {}
 # Initialize the text summarization pipeline
 summarizer = pipeline("summarization")
 
+# Home page route
 @app.route('/')
 def home():
     return render_template('home.html')
 
+# Tabular data page route
 @app.route('/tabular_data')
 def tabular_data():
     return render_template('tabular_data.html')
 
+# Image processing page route
 @app.route('/image_processing')
 def image_processing():
     return render_template('image_processing.html')
 
+# Text analysis page route
 @app.route('/text_analysis')
 def text_analysis():
     return render_template('text_analysis.html')
 
-# Helper functions
+# Helper function to check allowed file types
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'csv', 'xls', 'xlsx'}
 
+# Helper function to create a timestamped filename
 def create_timestamped_filename(filename):
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     basename, extension = os.path.splitext(filename)
     return f"{basename}_{timestamp}{extension}"
 
+# Helper function to preprocess data
 def preprocess_data(df):
     df = df.apply(pd.to_numeric, errors='coerce')  # Convert to numeric, set errors to NaN
     df.ffill(inplace=True)  # Forward fill NaNs
     df.bfill(inplace=True)  # Backward fill NaNs
     return df
 
+# Helper function to calculate statistics
 def calculate_statistics(df):
     numeric_df = df.select_dtypes(include=[np.number])
     categorical_df = df.select_dtypes(include=['object', 'category'])
@@ -94,6 +101,7 @@ def calculate_statistics(df):
 
     return stats
 
+# Helper function to calculate outliers
 def calculate_outliers(df):
     outlier_results = {}
     for column in df.columns:
@@ -104,6 +112,7 @@ def calculate_outliers(df):
         outlier_results[column] = df[column][filter].tolist()
     return outlier_results
 
+# Helper function to convert NaNs to None in a dictionary
 def convert_nan_to_none(obj):
     if isinstance(obj, dict):
         return {k: convert_nan_to_none(v) for k, v in obj.items()}
@@ -114,6 +123,7 @@ def convert_nan_to_none(obj):
     else:
         return obj
 
+# Route for uploading files
 @app.route('/upload', methods=['POST'])
 def file_upload():
     if 'files' not in request.files:
@@ -141,6 +151,24 @@ def file_upload():
     
     return jsonify({"filenames": filenames, "status": "Files successfully uploaded"}), 200
 
+# Route for processing data
+@app.route('/process/<filename>', methods=['GET'])
+def process_data(filename):
+    if filename not in data_store:
+        return jsonify({'error': 'File not found'}), 404
+
+    try:
+        df = data_store[filename]["cleaned"]
+        stats_type = request.args.get('stats', 'all')
+        stats = calculate_statistics(df)
+
+        stats = convert_nan_to_none(stats)
+
+        return jsonify({'filename': filename, 'statistics': stats}), 200
+    except Exception as e:
+        return jsonify({'error': 'Error processing file: ' + str(e)}), 500
+
+# Route for querying data
 @app.route('/query/<filename>', methods=['POST'])
 def query_data(filename):
     if filename not in data_store:
@@ -170,22 +198,7 @@ def query_data(filename):
         logging.exception("Error executing query")
         return jsonify({'error': 'Error executing query: ' + str(e)}), 500
 
-@app.route('/process/<filename>', methods=['GET'])
-def process_data(filename):
-    if filename not in data_store:
-        return jsonify({'error': 'File not found'}), 404
-
-    try:
-        df = data_store[filename]["cleaned"]
-        stats_type = request.args.get('stats', 'all')
-        stats = calculate_statistics(df)
-
-        stats = convert_nan_to_none(stats)
-
-        return jsonify({'filename': filename, 'statistics': stats}), 200
-    except Exception as e:
-        return jsonify({'error': 'Error processing file: ' + str(e)}), 500
-
+# Route for managing data (CRUD operations)
 @app.route('/data/<filename>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def manage_data(filename):
     if filename not in data_store:
@@ -225,6 +238,7 @@ def manage_data(filename):
         except Exception as e:
             return jsonify({'error': 'Error deleting data: ' + str(e)}), 500
 
+# Route for visualizing data
 @app.route('/visualize/<filename>', methods=['GET'])
 def visualize_data(filename):
     if filename not in data_store:
@@ -264,6 +278,7 @@ def visualize_data(filename):
         logging.exception("Error visualizing data")
         return jsonify({'error': 'Error visualizing data: ' + str(e)}), 500
 
+# Route for uploading images
 @app.route('/upload_image', methods=['POST'])
 def upload_image():
     if 'images' not in request.files:
@@ -292,10 +307,12 @@ def upload_image():
 
     return jsonify({"message": "Images successfully uploaded", "files": file_info}), 200
 
+# Route for accessing uploaded files
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_file(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
+# Helper function to generate color histogram
 def generate_histogram(image_path):
     image = cv2.imread(image_path)
     color = ('b', 'g', 'r')
@@ -311,12 +328,14 @@ def generate_histogram(image_path):
 
     return output_path
 
+# Route for generating color histogram
 @app.route('/histogram/<filename>', methods=['GET'])
 def get_histogram(filename):
     image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     histogram_path = generate_histogram(image_path)
     return send_file(histogram_path, mimetype='image/png')
 
+# Helper function to generate segmentation mask
 def generate_segmentation_mask(image_path):
     image = cv2.imread(image_path)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -327,12 +346,14 @@ def generate_segmentation_mask(image_path):
     
     return output_path
 
+# Route for generating segmentation mask
 @app.route('/segmentation/<filename>', methods=['GET'])
 def get_segmentation_mask(filename):
     image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     mask_path = generate_segmentation_mask(image_path)
     return send_file(mask_path, mimetype='image/png')
 
+# Route for resizing images
 @app.route('/resize/<filename>', methods=['POST'])
 def resize_image(filename):
     width = request.json.get('width')
@@ -351,6 +372,7 @@ def resize_image(filename):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# Route for cropping images
 @app.route('/crop/<filename>', methods=['POST'])
 def crop_image(filename):
     image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -372,6 +394,7 @@ def crop_image(filename):
     
     return send_file(output, mimetype='image/png')
 
+# Route for converting image formats
 @app.route('/convert/<filename>', methods=['POST'])
 def convert_image(filename):
     logging.debug(f"Received request to convert {filename}")
@@ -408,12 +431,14 @@ def convert_image(filename):
         logging.error(f"General error converting image: {e}")
         return jsonify({"error": f"General error converting image: {str(e)}"}), 500
 
+# Route for text summarization
 @app.route('/summarize', methods=['POST'])
 def summarize():
     text = request.form['text']
     summary = summarizer(text, max_length=50, min_length=25, do_sample=False)
     return jsonify({'summary': summary[0]['summary_text'], 'input_text_summary': text})
 
+# Route for keyword extraction
 @app.route('/keywords', methods=['POST'])
 def extract_keywords():
     text = request.form['text']
@@ -422,6 +447,7 @@ def extract_keywords():
     keywords_list = [kw[0] for kw in keywords]
     return jsonify({'keywords': keywords_list, 'input_text_keywords': text})
 
+# Route for sentiment analysis
 @app.route('/sentiment', methods=['POST'])
 def sentiment_analysis():
     text = request.form['text']
@@ -435,6 +461,7 @@ def sentiment_analysis():
         sentiment = "Neutral"
     return jsonify({'sentiment': f"{sentiment} ({sentiment_score})", 'input_text_sentiment': text})
 
+# Route for text search
 @app.route('/search', methods=['POST'])
 def search_text():
     text = request.form['text']
@@ -445,6 +472,7 @@ def search_text():
         result = "Not Found"
     return jsonify({'result': result, 'input_text_search': text, 'search_term': search_term})
 
+# Route for text categorization
 @app.route('/categorize', methods=['POST'])
 def categorize_text():
     text = request.form['text']
@@ -457,6 +485,7 @@ def categorize_text():
         category = 'Neutral'
     return jsonify({'category': category, 'input_text_categorize': text})
 
+# Route for custom text query
 @app.route('/custom_query', methods=['POST'])
 def custom_query():
     text = request.form['text']
@@ -465,14 +494,16 @@ def custom_query():
     occurrences = text.count(query)
     return jsonify({'occurrences': occurrences, 'input_text_query': text, 'query': query})
 
-
+# Error handler for file too large
 @app.errorhandler(413)
 def too_large(e):
     return jsonify({'message': 'The file is too large'}), 413
 
+# Error handler for internal server error
 @app.errorhandler(500)
 def internal_error(e):
     return jsonify({'message': 'Internal server error'}), 500
 
+# Main entry point for running the application
 if __name__ == "__main__":
     app.run(port=5003, debug=True)
