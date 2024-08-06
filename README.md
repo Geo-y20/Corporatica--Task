@@ -566,3 +566,10 @@ def sentiment_analysis():
 1. Enter the text for sentiment analysis in the input box.
 2. Click on the "Analyze Sentiment" button to generate and display the sentiment.
 
+
+
+## Sample of my work
+![Sample of website](Sample%20of%20website/welcome.png)
+![Sample of website](Sample%20of%20website/image.png)
+![Sample of website](Sample%20of%20website/sample 2.png)
+![Sample of website](Sample%20of%20website/sample 3.png)
