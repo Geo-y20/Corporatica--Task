@@ -53,6 +53,47 @@
             <p>{{ sentiment }}</p>
             {% endif %}
         </div>
+
+        <!-- Text Search -->
+        <div class="form-container">
+            <h2>Text Search</h2>
+            <form action="/search" method="post">
+                <textarea name="text" rows="4" cols="50" placeholder="Enter text to search..." class="form-control">{{ input_text_search or '' }}</textarea><br>
+                <input type="text" name="search_term" placeholder="Enter search term..." class="form-control">
+                <button type="submit" class="btn btn-primary mt-2">Search</button>
+            </form>
+            {% if result_search %}
+            <h3>Search Result:</h3>
+            <p>{{ result_search }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Text Categorization -->
+        <div class="form-container">
+            <h2>Text Categorization</h2>
+            <form action="/categorize" method="post">
+                <textarea name="text" rows="4" cols="50" placeholder="Enter text to categorize..." class="form-control">{{ input_text_categorize or '' }}</textarea><br>
+                <button type="submit" class="btn btn-primary mt-2">Categorize</button>
+            </form>
+            {% if category %}
+            <h3>Category:</h3>
+            <p>{{ category }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Custom Query -->
+        <div class="form-container">
+            <h2>Custom Query</h2>
+            <form action="/custom_query" method="post">
+                <textarea name="text" rows="4" cols="50" placeholder="Enter text for custom query..." class="form-control">{{ input_text_query or '' }}</textarea><br>
+                <input type="text" name="query" placeholder="Enter query..." class="form-control">
+                <button type="submit" class="btn btn-primary mt-2">Execute Query</button>
+            </form>
+            {% if occurrences %}
+            <h3>Query Result:</h3>
+            <p>{{ occurrences }}</p>
+            {% endif %}
+        </div>
     </div>
     <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
