@@ -73,8 +73,8 @@ Corporatica Back-End Developer Task Phase/
 ├── sample_1.jpg
 ├── sample_2.jpg
 ├── sample_3.jpeg
-└── Dockerfile
-└── docker-compose.yml
+└── Updated_Dockerfile
+└── updated_docker-compose.yml
 ```
 
 ## Installation and Setup
@@ -88,7 +88,7 @@ Corporatica Back-End Developer Task Phase/
 ### Steps
 1. Clone the repository:
     ```bash
-    git clone https://github.com/Geo-y20/Corporatica--Task/tree/main
+    git clone https://github.com/Geo-y20/Corporatica--Task
     cd Corporatica--Task
     ```
 2. Create and activate a virtual environment:
