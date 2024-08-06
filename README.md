@@ -571,5 +571,5 @@ def sentiment_analysis():
 ## Sample of my work
 ![Sample of website](Sample%20of%20website/welcome.png)
 ![Sample of website](Sample%20of%20website/image.png)
-![Sample of website](Sample%20of%20website/sample 2.png)
-![Sample of website](Sample%20of%20website/sample 3.png)
+![Sample of website](Sample%20of%20website/sample2.png)
+![Sample of website](Sample%20of%20website/sample3.png)
