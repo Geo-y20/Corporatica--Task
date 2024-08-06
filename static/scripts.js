@@ -192,3 +192,100 @@ function convertImage() {
         document.getElementById('converted').style.display = 'block';
     }).catch(error => console.error('Error:', error));
 }
+
+$(document).ready(function() {
+    $('#summarize-form').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/summarize',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#summary-result').html('<h3>Summary:</h3><p>' + response.summary + '</p>');
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+
+    $('#keywords-form').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/keywords',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                let keywordsHtml = '<h3>Keywords:</h3><ul>';
+                response.keywords.forEach(function(keyword) {
+                    keywordsHtml += '<li>' + keyword + '</li>';
+                });
+                keywordsHtml += '</ul>';
+                $('#keywords-result').html(keywordsHtml);
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+
+    $('#sentiment-form').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/sentiment',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#sentiment-result').html('<h3>Sentiment:</h3><p>' + response.sentiment + '</p>');
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+
+    $('#search-form').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/search',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#search-result').html('<h3>Search Result:</h3><p>' + response.result + '</p>');
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+
+    $('#categorize-form').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/categorize',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#categorize-result').html('<h3>Category:</h3><p>' + response.category + '</p>');
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+
+    $('#custom-query-form').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/custom_query',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#custom-query-result').html('<h3>Query Result:</h3><p>Occurrences: ' + response.occurrences + '</p>');
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+});
