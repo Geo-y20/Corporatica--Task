@@ -66,7 +66,7 @@ Corporatica Back-End Developer Task Phase/
 ├── templates/
 │   ├── home.html
 │   ├── image_processing.html
-│   ├── index.html
+│  
 │   ├── tabular_data.html
 │   └── text_analysis.html
 ├── uploads/
