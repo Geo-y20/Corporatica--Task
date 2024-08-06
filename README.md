@@ -1,3 +1,7 @@
+Sure, I'll include a detailed section on tabular data processing and update the README file accordingly.
+
+---
+
 # Corporatica Full-Stack Software Engineering Task
 
 ## Overview
@@ -79,7 +83,7 @@ Corporatica Back-End Developer Task Phase/
 ## Installation and Setup
 
 ### Prerequisites
-- Python 3.6 or higher " 3.11.4"
+- Python 3.6 or higher
 - Virtual environment tool (venv)
 - Docker
 - Docker Compose
@@ -87,7 +91,7 @@ Corporatica Back-End Developer Task Phase/
 ### Steps
 1. Clone the repository:
     ```bash
-    git clone https://github.com/Geo-y20/Corporatica--Task.git
+    git clone https://github.com/Geo-y20/Corporatica--Task/tree/main
     cd Corporatica--Task
     ```
 2. Create and activate a virtual environment:
@@ -117,13 +121,181 @@ This module handles the uploading, processing, querying, and visualization of ta
 - **File Upload**: `/upload` (POST)
     - Uploads tabular data files (CSV, XLS, XLSX) to the server.
 - **Process Data**: `/process/<filename>` (GET)
-    - Processes the uploaded data and calculates statistics.
+    - Processes the uploaded data and calculates statistics including mean, median, mode, quartiles, and outliers.
 - **Query Data**: `/query/<filename>` (POST)
     - Allows users to run SQL-like queries on the data.
 - **Manage Data**: `/data/<filename>` (GET, POST, PUT, DELETE)
     - Provides CRUD operations for the data.
 - **Visualize Data**: `/visualize/<filename>` (GET)
     - Generates visualizations like histograms, bar charts, and box plots.
+
+#### Detailed Code Snippets
+- **File Upload and Preprocessing**
+    ```python
+    @app.route('/upload', methods=['POST'])
+    def file_upload():
+        if 'files' not in request.files:
+            return jsonify({'message': 'No files part in the request'}), 400
+        files = request.files.getlist('files')
+        if not files:
+            return jsonify({'message': 'No files uploaded'}), 400
+
+        filenames = []
+        for f in files:
+            if not allowed_file(f.filename):
+                return jsonify({'message': 'File type not allowed'}), 400
+            original_filename = secure_filename(f.filename)
+            new_filename = create_timestamped_filename(original_filename)
+            save_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
+            f.save(save_path)
+            df = pd.read_csv(save_path) if new_filename.endswith('.csv') else pd.read_excel(save_path)
+            
+            # Store both original and cleaned dataframes
+            data_store[new_filename] = {
+                "original": df,
+                "cleaned": preprocess_data(df.copy())
+            }
+            filenames.append(new_filename)
+        
+        return jsonify({"filenames": filenames, "status": "Files successfully uploaded"}), 200
+    ```
+
+- **Processing Data and Calculating Statistics**
+    ```python
+    @app.route('/process/<filename>', methods=['GET'])
+    def process_data(filename):
+        if filename not in data_store:
+            return jsonify({'error': 'File not found'}), 404
+
+        try:
+            df = data_store[filename]["cleaned"]
+            stats_type = request.args.get('stats', 'all')
+            stats = calculate_statistics(df)
+
+            stats = convert_nan_to_none(stats)
+
+            return jsonify({'filename': filename, 'statistics': stats}), 200
+        except Exception as e:
+            return jsonify({'error': 'Error processing file: ' + str(e)}), 500
+    ```
+
+- **Querying Data**
+    ```python
+    @app.route('/query/<filename>', methods=['POST'])
+    def query_data(filename):
+        if filename not in data_store:
+            logging.debug(f"Filename {filename} not found in data_store")
+            return jsonify({'error': 'File not found'}), 404
+
+        params = request.json
+        if not params or 'query' not in params:
+            logging.debug("No query provided in request")
+            return jsonify({'error': 'No query provided'}), 400
+
+        try:
+            df = data_store[filename]["original"]
+            query = params['query']
+            logging.debug(f"Executing query: {query}")
+
+            # Ensure the query is valid
+            if not query.strip().lower().startswith("select"):
+                return jsonify({'error': 'Only SELECT queries are allowed'}), 400
+
+            result_df = psql.sqldf(query, locals())
+            logging.debug(f"Query result: {result_df}")
+
+            result_json = result_df.to_dict(orient='records')
+            return jsonify(result_json), 200
+        except Exception as e:
+            logging.exception("Error executing query")
+            return jsonify({'error': 'Error executing query: ' + str(e)}), 500
+    ```
+
+- **Managing Data**
+    ```python
+    @app.route('/data/<filename>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+    def manage_data(filename):
+        if filename not in data_store:
+            return jsonify({'error': 'File not found'}), 404
+
+        df = data_store[filename]["original"]
+
+        if request.method == 'GET':
+            return jsonify(convert_nan_to_none(df.to_dict(orient='records'))), 200
+
+        elif request.method == 'POST':
+            new_data = request.json
+            try:
+                new_df = pd.DataFrame([new_data])
+                df = pd.concat([df, new_df], ignore_index=True)
+                data_store[filename]["original"] = df
+                return jsonify(convert_nan_to_none(df.to_dict(orient='records'))), 200
+            except Exception as e:
+                return jsonify({'error': 'Error adding data: ' + str(e)}), 500
+
+        elif request.method == 'PUT':
+            update_data = request.json
+            try:
+                for index, row in update_data.items():
+                    df.loc[int(index
+
+)] = row
+                data_store[filename]["original"] = df
+                return jsonify(convert_nan_to_none(df.to_dict(orient='records'))), 200
+            except Exception as e:
+                return jsonify({'error': 'Error updating data: ' + str(e)}), 500
+
+        elif request.method == 'DELETE':
+            delete_indices = request.json.get('indices')
+            try:
+                df.drop(index=delete_indices, inplace=True)
+                data_store[filename]["original"] = df
+                return jsonify(convert_nan_to_none(df.to_dict(orient='records'))), 200
+            except Exception as e:
+                return jsonify({'error': 'Error deleting data: ' + str(e)}), 500
+    ```
+
+- **Visualizing Data**
+    ```python
+    @app.route('/visualize/<filename>', methods=['GET'])
+    def visualize_data(filename):
+        if filename not in data_store:
+            return jsonify({'error': 'File not found'}), 404
+
+        try:
+            df = data_store[filename]["original"]
+            plot_type = request.args.get('plot_type', 'histogram')
+            column = request.args.get('column')
+
+            if column not in df.columns:
+                return jsonify({'error': 'Column not found'}), 404
+
+            plt.figure(figsize=(10, 6))
+
+            if plot_type == 'histogram':
+                df[column].hist()
+                plt.title(f'Histogram of {column}')
+            elif plot_type == 'bar':
+                df[column].value_counts().plot(kind='bar')
+                plt.title(f'Bar Chart of {column}')
+            elif plot_type == 'box':
+                df[column].plot(kind='box')
+                plt.title(f'Box Plot of {column}')
+            else:
+                return jsonify({'error': 'Invalid plot type'}), 400
+
+            plt.tight_layout()
+
+            img = io.BytesIO()
+            plt.savefig(img, format='png')
+            img.seek(0)
+            plot_url = base64.b64encode(img.getvalue()).decode()
+
+            return jsonify({'plot_url': f'data:image/png;base64,{plot_url}'}), 200
+        except Exception as e:
+            logging.exception("Error visualizing data")
+            return jsonify({'error': 'Error visualizing data: ' + str(e)}), 500
+    ```
 
 ### Image Processing
 
@@ -233,9 +405,7 @@ def get_segmentation_mask(filename):
     return send_file(mask_path, mimetype='image/png')
 ```
 
-#### Image Manip
-
-ulation Tasks
+#### Image Manipulation Tasks
 - **Resizing Image**
 ```python
 @app.route('/resize/<filename>', methods=['POST'])
@@ -313,7 +483,9 @@ def convert_image(filename):
 def summarize():
     text = request.form['text']
     summary = summarizer(text, max_length=50, min_length=25, do_sample=False)
-    return render_template('text_analysis.html', summary=summary[0]['summary_text'], input_text_summary=text)
+    return render_template('text_analysis.html', summary=summary[0]['summary_text'],
+
+ input_text_summary=text)
 ```
 
 ### Keyword Extraction
