@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabular Data</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Tabular Data</h1>
+        
+        <!-- File Upload Form -->
+        <div class="form-group">
+            <h2>Upload File</h2>
+            <form id="upload-form" enctype="multipart/form-data">
+                <label for="files">Choose files:</label>
+                <input type="file" id="files" name="files" multiple class="form-control-file">
+                <button type="button" class="btn btn-primary mt-2" onclick="uploadFiles()">Upload</button>
+            </form>
+            <div class="result" id="upload-result"></div>
+        </div>
+
+        <!-- Process Data Form -->
+        <div class="form-group">
+            <h2>Process Data</h2>
+            <input type="text" id="process-filename" class="form-control" placeholder="Enter filename">
+            <select id="stats" class="form-control mt-2">
+                <option value="all">All</option>
+                <option value="basic">Basic</option>
+                <option value="advanced">Advanced</option>
+            </select>
+            <button class="btn btn-primary mt-2" onclick="processData()">Process</button>
+            <div class="result" id="process-result"></div>
+        </div>
+
+        <!-- Query Data Form -->
+        <div class="form-group">
+            <h2>Query Data</h2>
+            <input type="text" id="query-filename" class="form-control" placeholder="Enter filename">
+            <textarea id="query" rows="4" class="form-control mt-2" placeholder="Enter your query"></textarea>
+            <button class="btn btn-primary mt-2" onclick="queryData()">Query</button>
+            <div class="result" id="query-result"></div>
+        </div>
+
+        <!-- Manage Data Form -->
+        <div class="form-group">
+            <h2>Manage Data</h2>
+            <input type="text" id="manage-filename" class="form-control" placeholder="Enter filename">
+            <textarea id="manage-data" rows="4" class="form-control mt-2" placeholder="Enter JSON data"></textarea>
+            <button class="btn btn-success mt-2" onclick="createData()">Create</button>
+            <button class="btn btn-info mt-2" onclick="readData()">Read</button>
+            <button class="btn btn-warning mt-2" onclick="updateData()">Update</button>
+            <button class="btn btn-danger mt-2" onclick="deleteData()">Delete</button>
+            <div class="result" id="manage-result"></div>
+        </div>
+
+        <!-- Visualize Data Form -->
+        <div class="form-group">
+            <h2>Visualize Data</h2>
+            <input type="text" id="visualize-filename" class="form-control" placeholder="Enter filename">
+            <select id="plot-type" class="form-control mt-2">
+                <option value="histogram">Histogram</option>
+                <option value="bar">Bar</option>
+                <option value="box">Box</option>
+            </select>
+            <input type="text" id="column-name" class="form-control mt-2" placeholder="Enter column name">
+            <button class="btn btn-primary mt-2" onclick="visualizeData()">Visualize</button>
+            <div class="result" id="visualize-result"></div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>

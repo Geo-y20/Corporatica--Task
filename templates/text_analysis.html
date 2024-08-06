@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Analysis</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Textual Data</h1>
+
+        <!-- Text Summarization -->
+        <div class="form-container">
+            <h2>Text Summarization</h2>
+            <form action="/summarize" method="post">
+                <textarea name="text" rows="4" cols="50" placeholder="Enter text to summarize..." class="form-control">{{ input_text_summary or '' }}</textarea><br>
+                <button type="submit" class="btn btn-primary mt-2">Summarize</button>
+            </form>
+            {% if summary %}
+            <h3>Summary:</h3>
+            <p>{{ summary }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Keyword Extraction -->
+        <div class="form-container">
+            <h2>Keyword Extraction</h2>
+            <form action="/keywords" method="post">
+                <textarea name="text" rows="4" cols="50" placeholder="Enter text to extract keywords..." class="form-control">{{ input_text_keywords or '' }}</textarea><br>
+                <button type="submit" class="btn btn-primary mt-2">Extract Keywords</button>
+            </form>
+            {% if keywords %}
+            <h3>Keywords:</h3>
+            <ul>
+                {% for keyword in keywords %}
+                <li>{{ keyword }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+
+        <!-- Sentiment Analysis -->
+        <div class="form-container">
+            <h2>Sentiment Analysis</h2>
+            <form action="/sentiment" method="post">
+                <textarea name="text" rows="4" cols="50" placeholder="Enter text to analyze sentiment..." class="form-control">{{ input_text_sentiment or '' }}</textarea><br>
+                <button type="submit" class="btn btn-primary mt-2">Analyze Sentiment</button>
+            </form>
+            {% if sentiment %}
+            <h3>Sentiment:</h3>
+            <p>{{ sentiment }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>
