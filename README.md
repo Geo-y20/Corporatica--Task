@@ -329,6 +329,10 @@ This module provides text summarization, keyword extraction, and sentiment analy
     - Extracts keywords from the input text.
 - **Sentiment Analysis**: `/sentiment` (POST)
     - Analyzes the sentiment of the input text.
+ - **Text Search**: /search (POST)
+    - Searches for a specific term within the input text.
+- **Text Categorization**: /categorize (POST)
+    - Categorizes the input text based on the presence of certain keywords.
 
 ### Detailed Code Snippets
 
@@ -569,10 +573,13 @@ def sentiment_analysis():
 ### Sentiment Analysis
 1. Enter the text for sentiment analysis in the input box.
 2. Click on the "Analyze Sentiment" button to generate and display the sentiment.
+
+
 ### Text Search
 1. Enter the text to be searched in the input box.
 2. Enter the search term in the input box.
-3. lick on the "Search" button to find and display the search result.
+3. Click on the "Search" button to find and display the search result.
+
 ### Text Categorization
 1. Enter the text to be categorized in the input box.
 2. Click on the "Categorize" button to generate and display the category.
