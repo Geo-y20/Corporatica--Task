@@ -1,6 +1,3 @@
-Sure, I'll include a detailed section on tabular data processing and update the README file accordingly.
-
----
 
 # Corporatica Full-Stack Software Engineering Task
 
