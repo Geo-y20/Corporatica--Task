@@ -79,7 +79,7 @@ Corporatica Back-End Developer Task Phase/
 ## Installation and Setup
 
 ### Prerequisites
-- Python 3.6 or higher
+- Python 3.6 or higher " 3.11.4"
 - Virtual environment tool (venv)
 - Docker
 - Docker Compose
@@ -87,8 +87,8 @@ Corporatica Back-End Developer Task Phase/
 ### Steps
 1. Clone the repository:
     ```bash
-    git clone <repository_url>
-    cd <repository_directory>
+    git clone https://github.com/Geo-y20/Corporatica--Task.git
+    cd Corporatica--Task
     ```
 2. Create and activate a virtual environment:
     ```bash
