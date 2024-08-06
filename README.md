@@ -39,7 +39,7 @@ We followed an Agile development methodology, allowing for iterative development
 ### Technology Selection Criteria
 The selection of technologies, libraries, and frameworks was based on the following criteria:
 - **Flask**: For its simplicity and ease of setting up a web server and handling HTTP requests.
-- **React**: For creating a responsive and dynamic front-end interface.
+- **Web Devlopment**: For creating a responsive and dynamic front-end interface.
 - **Docker and Kubernetes**: For containerization and scalable deployment.
 - **Pandas and SQLAlchemy**: For efficient data manipulation and ORM capabilities.
 - **Pillow and OpenCV**: For comprehensive image processing tasks.
