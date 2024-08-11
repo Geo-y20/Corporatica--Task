@@ -8,8 +8,23 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Flask API Interface</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/tabular_data">Tabular Data</a></li>
+                <li class="nav-item"><a class="nav-link" href="/image_processing">RGB Images</a></li>
+                <li class="nav-item"><a class="nav-link" href="/text_analysis">Textual Data</a></li>
+            </ul>
+        </div>
+    </nav>
     <div class="container">
         <h1>Image Processing with Flask</h1>
+        <p class="text-muted">Upload images and perform various processing tasks, including generating histograms, segmentation masks, resizing, cropping, and format conversion.</p>
         <div class="row py-4">
             <div class="col-lg-8 mx-auto">
                 <!-- Upload image input-->
@@ -24,7 +39,7 @@
                             </label>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Upload</button>
+                    <button type="submit" class="btn btn-secondary">Upload</button>
                 </form>
 
                 <div id="uploadedImages" class="mt-4"></div>
@@ -32,16 +47,16 @@
                 <h2 class="mt-4">Actions</h2>
                 <input type="text" id="filename" placeholder="Enter filename" class="form-control my-2">
 
-                <button onclick="getHistogram()" class="btn btn-primary">Get Histogram</button>
+                <button onclick="getHistogram()" class="btn btn-secondary">Get Histogram</button>
                 <img id="histogram" src="#" alt="Histogram" class="img-fluid rounded shadow-sm mx-auto d-block my-2" style="display: none;">
 
-                <button onclick="getSegmentation()" class="btn btn-primary">Get Segmentation Mask</button>
+                <button onclick="getSegmentation()" class="btn btn-secondary">Get Segmentation Mask</button>
                 <img id="segmentation" src="#" alt="Segmentation Mask" class="img-fluid rounded shadow-sm mx-auto d-block my-2" style="display: none;">
 
                 <h3 class="mt-4">Resize Image</h3>
                 <input type="number" id="resizeWidth" placeholder="Width" class="form-control my-2">
                 <input type="number" id="resizeHeight" placeholder="Height" class="form-control my-2">
-                <button onclick="resizeImage()" class="btn btn-primary">Resize</button>
+                <button onclick="resizeImage()" class="btn btn-secondary">Resize</button>
                 <img id="resized" src="#" alt="Resized Image" class="img-fluid rounded shadow-sm mx-auto d-block my-2" style="display: none;">
 
                 <h3 class="mt-4">Crop Image</h3>
@@ -49,7 +64,7 @@
                 <input type="number" id="cropTop" placeholder="Top" class="form-control my-2">
                 <input type="number" id="cropRight" placeholder="Right" class="form-control my-2">
                 <input type="number" id="cropBottom" placeholder="Bottom" class="form-control my-2">
-                <button onclick="cropImage()" class="btn btn-primary">Crop</button>
+                <button onclick="cropImage()" class="btn btn-secondary">Crop</button>
                 <img id="cropped" src="#" alt="Cropped Image" class="img-fluid rounded shadow-sm mx-auto d-block my-2" style="display: none;">
 
                 <h3 class="mt-4">Convert Image</h3>
@@ -60,7 +75,7 @@
                     <option value="gif">GIF</option>
                     <option value="tiff">TIFF</option>
                 </select>
-                <button onclick="convertImage()" class="btn btn-primary">Convert</button>
+                <button onclick="convertImage()" class="btn btn-secondary">Convert</button>
                 <img id="converted" src="#" alt="Converted Image" class="img-fluid rounded shadow-sm mx-auto d-block my-2" style="display: none;">
             </div>
         </div>

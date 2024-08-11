@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,94 +8,113 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
+
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Flask API Interface</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/tabular_data">Tabular Data</a></li>
+                <li class="nav-item"><a class="nav-link" href="/image_processing">RGB Images</a></li>
+                <li class="nav-item"><a class="nav-link" href="/text_analysis">Textual Data</a></li>
+            </ul>
+        </div>
+    </nav>
     <div class="container">
         <h1>Textual Data</h1>
+        <p class="text-muted">Analyze textual data through various tasks such as summarization, keyword extraction,
+            sentiment analysis, and more.</p>
 
         <!-- Text Summarization -->
         <div class="form-container">
             <h2>Text Summarization</h2>
-            <form action="/summarize" method="post">
-                <textarea name="text" rows="4" cols="50" placeholder="Enter text to summarize..." class="form-control">{{ input_text_summary or '' }}</textarea><br>
+            <form id="summarize-form" action="/summarize" method="post">
+                <textarea name="text" rows="4" cols="50" placeholder="Enter text to summarize..."
+                    class="form-control"></textarea><br>
                 <button type="submit" class="btn btn-primary mt-2">Summarize</button>
             </form>
-            {% if summary %}
-            <h3>Summary:</h3>
-            <p>{{ summary }}</p>
-            {% endif %}
+            <div id="summary-result"></div>
         </div>
 
         <!-- Keyword Extraction -->
         <div class="form-container">
             <h2>Keyword Extraction</h2>
-            <form action="/keywords" method="post">
-                <textarea name="text" rows="4" cols="50" placeholder="Enter text to extract keywords..." class="form-control">{{ input_text_keywords or '' }}</textarea><br>
+            <form id="keywords-form" action="/keywords" method="post">
+                <textarea name="text" rows="4" cols="50" placeholder="Enter text to extract keywords..."
+                    class="form-control"></textarea><br>
                 <button type="submit" class="btn btn-primary mt-2">Extract Keywords</button>
             </form>
-            {% if keywords %}
-            <h3>Keywords:</h3>
-            <ul>
-                {% for keyword in keywords %}
-                <li>{{ keyword }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
+            <div id="keywords-result"></div>
         </div>
 
         <!-- Sentiment Analysis -->
         <div class="form-container">
             <h2>Sentiment Analysis</h2>
-            <form action="/sentiment" method="post">
-                <textarea name="text" rows="4" cols="50" placeholder="Enter text to analyze sentiment..." class="form-control">{{ input_text_sentiment or '' }}</textarea><br>
+            <form id="sentiment-form" action="/sentiment" method="post">
+                <textarea name="text" rows="4" cols="50" placeholder="Enter text to analyze sentiment..."
+                    class="form-control"></textarea><br>
                 <button type="submit" class="btn btn-primary mt-2">Analyze Sentiment</button>
             </form>
-            {% if sentiment %}
-            <h3>Sentiment:</h3>
-            <p>{{ sentiment }}</p>
-            {% endif %}
+            <div id="sentiment-result"></div>
         </div>
 
         <!-- Text Search -->
         <div class="form-container">
             <h2>Text Search</h2>
-            <form action="/search" method="post">
-                <textarea name="text" rows="4" cols="50" placeholder="Enter text to search..." class="form-control">{{ input_text_search or '' }}</textarea><br>
+            <form id="search-form" action="/search" method="post">
+                <textarea name="text" rows="4" cols="50" placeholder="Enter text to search..."
+                    class="form-control"></textarea><br>
                 <input type="text" name="search_term" placeholder="Enter search term..." class="form-control">
                 <button type="submit" class="btn btn-primary mt-2">Search</button>
             </form>
-            {% if result_search %}
-            <h3>Search Result:</h3>
-            <p>{{ result_search }}</p>
-            {% endif %}
+            <div id="search-result"></div>
         </div>
 
         <!-- Text Categorization -->
         <div class="form-container">
             <h2>Text Categorization</h2>
-            <form action="/categorize" method="post">
-                <textarea name="text" rows="4" cols="50" placeholder="Enter text to categorize..." class="form-control">{{ input_text_categorize or '' }}</textarea><br>
+            <form id="categorize-form" action="/categorize" method="post">
+                <textarea name="text" rows="4" cols="50" placeholder="Enter text to categorize..."
+                    class="form-control"></textarea><br>
                 <button type="submit" class="btn btn-primary mt-2">Categorize</button>
             </form>
-            {% if category %}
-            <h3>Category:</h3>
-            <p>{{ category }}</p>
-            {% endif %}
+            <div id="categorize-result"></div>
         </div>
 
         <!-- Custom Query -->
         <div class="form-container">
             <h2>Custom Query</h2>
-            <form action="/custom_query" method="post">
-                <textarea name="text" rows="4" cols="50" placeholder="Enter text for custom query..." class="form-control">{{ input_text_query or '' }}</textarea><br>
+            <form id="custom-query-form" action="/custom_query" method="post">
+                <textarea name="text" rows="4" cols="50" placeholder="Enter text for custom query..."
+                    class="form-control"></textarea><br>
                 <input type="text" name="query" placeholder="Enter query..." class="form-control">
                 <button type="submit" class="btn btn-primary mt-2">Execute Query</button>
             </form>
-            {% if occurrences %}
-            <h3>Query Result:</h3>
-            <p>{{ occurrences }}</p>
-            {% endif %}
+            <div id="custom-query-result"></div>
         </div>
+
+        <!-- t-SNE Visualization -->
+        <div class="form-container">
+            <h2>t-SNE Visualization</h2>
+            <form id="tsne-form" action="/tsne" method="post">
+                <textarea name="text" rows="4" cols="50" placeholder="Enter text for t-SNE..."
+                    class="form-control"></textarea><br>
+                <button type="submit" class="btn btn-secondary mt-2">Generate t-SNE</button>
+            </form>
+            <div id="tsne-result">
+                <canvas id="tsneCanvas" width="600" height="600" style="border:1px solid #000000;"></canvas>
+            </div>
+        </div>
+
+
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
+
 </html>

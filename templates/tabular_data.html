@@ -8,8 +8,23 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Flask API Interface</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/tabular_data">Tabular Data</a></li>
+                <li class="nav-item"><a class="nav-link" href="/image_processing">RGB Images</a></li>
+                <li class="nav-item"><a class="nav-link" href="/text_analysis">Textual Data</a></li>
+            </ul>
+        </div>
+    </nav>
     <div class="container">
         <h1>Tabular Data</h1>
+        <p class="text-muted">Upload, process, query, and visualize tabular data files. You can manage your data and create insightful visualizations with ease.</p>
         
         <!-- File Upload Form -->
         <div class="form-group">
@@ -17,7 +32,7 @@
             <form id="upload-form" enctype="multipart/form-data">
                 <label for="files">Choose files:</label>
                 <input type="file" id="files" name="files" multiple class="form-control-file">
-                <button type="button" class="btn btn-primary mt-2" onclick="uploadFiles()">Upload</button>
+                <button type="button" class="btn btn-secondary mt-2" onclick="uploadFiles()">Upload</button>
             </form>
             <div class="result" id="upload-result"></div>
         </div>
@@ -25,28 +40,31 @@
         <!-- Process Data Form -->
         <div class="form-group">
             <h2>Process Data</h2>
+            <p class="text-muted">Select a file and the type of statistics you want to generate. Basic statistics include mean, median, etc., while advanced statistics include outliers, skewness, and more.</p>
             <input type="text" id="process-filename" class="form-control" placeholder="Enter filename">
             <select id="stats" class="form-control mt-2">
                 <option value="all">All</option>
                 <option value="basic">Basic</option>
                 <option value="advanced">Advanced</option>
             </select>
-            <button class="btn btn-primary mt-2" onclick="processData()">Process</button>
+            <button class="btn btn-secondary mt-2" onclick="processData()">Process</button>
             <div class="result" id="process-result"></div>
         </div>
 
         <!-- Query Data Form -->
         <div class="form-group">
             <h2>Query Data</h2>
+            <p class="text-muted">Run SQL-like queries on your data to extract specific information. Make sure to provide a valid SQL SELECT statement.</p>
             <input type="text" id="query-filename" class="form-control" placeholder="Enter filename">
             <textarea id="query" rows="4" class="form-control mt-2" placeholder="Enter your query"></textarea>
-            <button class="btn btn-primary mt-2" onclick="queryData()">Query</button>
+            <button class="btn btn-secondary mt-2" onclick="queryData()">Query</button>
             <div class="result" id="query-result"></div>
         </div>
 
         <!-- Manage Data Form -->
         <div class="form-group">
             <h2>Manage Data</h2>
+            <p class="text-muted">You can create, read, update, and delete entries in your data file. Input the data in JSON format.</p>
             <input type="text" id="manage-filename" class="form-control" placeholder="Enter filename">
             <textarea id="manage-data" rows="4" class="form-control mt-2" placeholder="Enter JSON data"></textarea>
             <button class="btn btn-success mt-2" onclick="createData()">Create</button>
@@ -59,6 +77,7 @@
         <!-- Visualize Data Form -->
         <div class="form-group">
             <h2>Visualize Data</h2>
+            <p class="text-muted">Generate different types of plots for your data. You can create histograms, bar charts, and box plots.</p>
             <input type="text" id="visualize-filename" class="form-control" placeholder="Enter filename">
             <select id="plot-type" class="form-control mt-2">
                 <option value="histogram">Histogram</option>
@@ -66,7 +85,7 @@
                 <option value="box">Box</option>
             </select>
             <input type="text" id="column-name" class="form-control mt-2" placeholder="Enter column name">
-            <button class="btn btn-primary mt-2" onclick="visualizeData()">Visualize</button>
+            <button class="btn btn-secondary mt-2" onclick="visualizeData()">Visualize</button>
             <div class="result" id="visualize-result"></div>
         </div>
     </div>
