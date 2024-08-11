@@ -1,9 +1,11 @@
+/* Body styles: Sets the background color, font, and margin for the entire page */
 body {
     background-color: #f8f9fa;
     font-family: Arial, sans-serif;
     margin: 20px;
 }
 
+/* Container styles: Centers the content, sets the maximum width, and adds padding, background color, shadow, and rounded corners */
 .container {
     max-width: 800px;
     margin: 50px auto 0;
@@ -13,19 +15,23 @@ body {
     border-radius: 8px;
 }
 
+/* Header styles: Adds bottom margin to main headings and subheadings in form containers */
 h1, .form-container h2 {
     margin-bottom: 30px;
 }
 
+/* Form container and group styles: Adds bottom margin to form containers and form groups */
 .form-container, .form-group {
     margin-bottom: 15px;
 }
 
+/* Label styles: Ensures labels are displayed as block elements and adds bottom margin */
 .form-container label, .form-group label {
     display: block;
     margin-bottom: 5px;
 }
 
+/* Input and textarea styles: Sets the width, padding, and box-sizing for various input elements and adds bottom margin */
 textarea, input[type="file"], input[type="text"], select, input[type="number"] {
     width: 100%;
     padding: 8px;
@@ -33,6 +39,7 @@ textarea, input[type="file"], input[type="text"], select, input[type="number"] {
     margin-bottom: 10px;
 }
 
+/* Button styles: Sets padding, background color, text color, border, cursor, width, and bottom margin for buttons */
 button {
     padding: 10px 15px;
     background-color: #007bff;
@@ -43,25 +50,30 @@ button {
     margin-bottom: 10px;
 }
 
+/* Button hover styles: Changes the background color of buttons when hovered */
 button:hover {
     background-color: #0056b3;
 }
 
+/* Result styles: Adds top margin to result containers */
 .result {
     margin-top: 20px;
 }
 
+/* Preformatted text styles: Sets background color, padding, and rounded corners for preformatted text blocks */
 .result pre {
     background-color: #f1f1f1;
     padding: 10px;
     border-radius: 5px;
 }
 
+/* Image visualization styles: Ensures images are responsive and adds styles for maximum width, height, and auto adjustment */
 .visualize img {
     max-width: 100%;
     height: auto;
 }
 
+/* Fluid image styles: Ensures images are responsive, centers them, adds border, rounded corners, and top margin */
 .img-fluid {
     max-width: 100%;
     height: auto;
@@ -70,4 +82,132 @@ button:hover {
     border: 1px solid #ddd;
     border-radius: 5px;
     margin-top: 10px;
+}
+
+
+/* Enhanced styles for a modern look */
+body {
+    background-color: #f2f2f2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    max-width: 900px;
+    margin-top: 60px;
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+h1, h2 {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-control, .btn {
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.jumbotron {
+    background-color: #007bff;
+    color: white;
+    padding: 40px 20px;
+    border-radius: 10px;
+}
+
+.jumbotron .display-4 {
+    font-weight: 300;
+}
+
+.navbar-light .navbar-brand {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.navbar-light .navbar-brand:hover {
+    color: #0056b3;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #007bff;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #0056b3;
+}
+
+
+
+/* Updated styles for a more professional look */
+body {
+    background-color: #f4f4f4;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.container {
+    max-width: 900px;
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1, h2 {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-control, .btn {
+    border-radius: 5px;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.jumbotron {
+    background-color: #17a2b8;
+    color: white;
+    padding: 30px 20px;
+    border-radius: 8px;
+}
+
+.jumbotron .display-4 {
+    font-weight: 300;
+}
+
+.navbar-light .navbar-brand {
+    font-weight: bold;
+    color: #17a2b8;
+}
+
+.navbar-light .navbar-brand:hover {
+    color: #138496;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #17a2b8;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #138496;
 }
